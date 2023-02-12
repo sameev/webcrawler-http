@@ -39,23 +39,52 @@ const getURLsFromHTML = (htmlBody, baseURL) => {
   return urls;
 }
 
-async function crawlPage(currentURL) {
+async function crawlPage(baseURL, currentURL, pages) {
+
+  const baseURLObj = new URL(baseURL);
+  const currentURLObj = new URL(currentURL);
+
+  if(baseURLObj.hostname !== currentURLObj.hostname) return pages;
+
+  const normalizedURL = normalizeURL(currentURL);
+
+  if(normalizedURL in pages) {
+    pages[normalizedURL]++;
+    return pages;
+  } else {
+    pages[normalizedURL] = 1;
+  }
+
+  // console.log(pages)
   console.log(`Actively crawling ${currentURL}.`)
+
   try {
-    const res = await fetch (currentURL)
+    const res = await fetch(currentURL)
     if(res.status > 399) {
-      throw new Error(`Received HTTP Error. Status Code: ${res.status}`)
+      // throw new Error(`Received HTTP Error. Status Code: ${res.status}`)
+      console.log(`Received HTTP Error. Status Code: ${res.status}`)
+      return pages;
     }
 
     const contentType = res.headers.get('content-type');
     if(!contentType.includes('text/html')) {
-      throw new Error(`Received non-html response`)
+      // throw new Error(`Received non-html response`);
+      console.log(`Received non-html response`)
+      return pages;
     }
 
     const htmlBody = await res.text();
-    console.log(htmlBody)
+    const nextURLs = getURLsFromHTML(htmlBody, baseURL);
+
+    for(const nextURL of nextURLs) {
+      pages = await crawlPage(baseURL, nextURL, pages)
+    }
+
+    return pages;
+
   } catch (err) {
     console.log(`Error in fetching ${currentURL}: ${err.message}`)
+    return pages;
   }
 }
 
