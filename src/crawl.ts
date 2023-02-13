@@ -3,7 +3,7 @@ const { JSDOM } = require("jsdom");
 const normalizeURL = (urlString) => {
   const urlObj = new URL(urlString);
 
-  let fullPath = `${urlObj.hostname}${urlObj.pathname}`;
+  const fullPath = `${urlObj.hostname}${urlObj.pathname}`;
   if (fullPath.length && fullPath.slice(-1) === "/") {
     return fullPath.slice(0, -1);
   }
