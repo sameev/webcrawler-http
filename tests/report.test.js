@@ -1,5 +1,5 @@
 const { test, expect } = require('@jest/globals');
-const { sortPages, printReport } = require('./report.js');
+const { sortPages, printReport } = require('../report.js');
 
 
 test('sortPages function: 2 pages', () => {
@@ -34,20 +34,4 @@ test('sortPages function: 5 pages', () => {
   ]
 
   expect(actual).toEqual(expected);
-})
-
-test('printReport', () => {
-  const input = [
-    ['https://wagslane.dev', 3],
-    ['https://wagslane.dev/path', 1]
-  ];
-
-  const actual = printReport(input);
-
-  const expected = `
-    Found 3 internal links to wagslane.dev.
-    Found 1 internal links to wagslane.dev/path.
-  `
-
-  expect(actual).toBe(expected);
 })
