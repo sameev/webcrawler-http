@@ -69,7 +69,7 @@ async function crawlPage(baseURL, currentURL, pages) {
     const contentType = res.headers.get('content-type');
     if(!contentType.includes('text/html')) {
       // throw new Error(`Received non-html response`);
-      console.log(`Received non-html response`)
+      console.log(`Received non-html response from ${currentURL}.`)
       return pages;
     }
 
