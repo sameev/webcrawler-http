@@ -1,5 +1,5 @@
-const { crawlPage } = require('./crawl.ts');
-const { printReport } = require('./report.ts');
+import { crawlPage } from "./crawl.js";
+import { printReport } from "./report.js";
 
 async function main() {
   if (process.argv.length < 3) {
@@ -17,4 +17,4 @@ async function main() {
   }
 }
 
-main();
+await main();

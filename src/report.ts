@@ -1,9 +1,9 @@
-function sortPages(pages) {
+function sortPages(pages: Pages) {
   const pagesArr = Object.entries(pages);
   return pagesArr.sort((a, b) => b[1] - a[1]);
 }
 
-function printReport(pages) {
+function printReport(pages: Pages) {
   console.log('============');
   console.log(
     'See Below For Results (Printed from most-to-least internal link count)'
@@ -20,7 +20,7 @@ function printReport(pages) {
   console.log('============');
 }
 
-module.exports = {
+export {
   sortPages,
   printReport
 };

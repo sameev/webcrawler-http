@@ -1,5 +1,5 @@
-const { test, expect } = require("@jest/globals");
-const { normalizeURL, getURLsFromHTML } = require("../crawl.ts");
+import { test, expect } from "@jest/globals";
+import { normalizeURL, getURLsFromHTML } from "../crawl.js";
 
 //normalizeURL tests
 

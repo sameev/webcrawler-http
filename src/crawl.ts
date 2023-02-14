@@ -1,4 +1,4 @@
-const { JSDOM } = require('jsdom');
+import { JSDOM } from 'jsdom';
 
 const normalizeURL = (urlString: string) => {
   const urlObj = new URL(urlString);
@@ -11,8 +11,8 @@ const normalizeURL = (urlString: string) => {
   return fullPath;
 };
 
-const getURLsFromHTML = (htmlBody: string, baseURL) => {
-  const urls = [];
+const getURLsFromHTML = (htmlBody: string, baseURL: string) => {
+  const urls: Array<string> = [];
   const dom = new JSDOM(htmlBody);
   const linkElements = dom.window.document.querySelectorAll('a');
 
@@ -38,7 +38,7 @@ const getURLsFromHTML = (htmlBody: string, baseURL) => {
   return urls;
 };
 
-async function crawlPage(baseURL, currentURL, pages) {
+async function crawlPage(baseURL: string, currentURL: string, pages: Pages) {
   const baseURLObj = new URL(baseURL);
   const currentURLObj = new URL(currentURL);
 
@@ -85,7 +85,7 @@ async function crawlPage(baseURL, currentURL, pages) {
   }
 }
 
-module.exports = {
+export {
   normalizeURL,
   getURLsFromHTML,
   crawlPage
