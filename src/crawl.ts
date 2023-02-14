@@ -1,6 +1,6 @@
 const { JSDOM } = require('jsdom');
 
-const normalizeURL = (urlString) => {
+const normalizeURL = (urlString: string) => {
   const urlObj = new URL(urlString);
 
   const fullPath = `${urlObj.hostname}${urlObj.pathname}`;
@@ -11,7 +11,7 @@ const normalizeURL = (urlString) => {
   return fullPath;
 };
 
-const getURLsFromHTML = (htmlBody, baseURL) => {
+const getURLsFromHTML = (htmlBody: string, baseURL) => {
   const urls = [];
   const dom = new JSDOM(htmlBody);
   const linkElements = dom.window.document.querySelectorAll('a');

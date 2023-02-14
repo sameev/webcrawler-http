@@ -5,9 +5,10 @@
   "main": "src/main.ts",
   "scripts": {
     "start": "node --no-warnings src/main.ts",
+    "build": "tsc",
     "test": "jest",
     "format": "prettier --config .prettierrc 'src/**/*.{ts, js}' --write",
-    "lint": "eslint \"src/**/*.{js, ts}\" --quiet"
+    "lint": "eslint . --report-unused-disable-directives"
   },
   "keywords": [],
   "author": "",

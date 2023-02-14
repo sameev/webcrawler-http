@@ -11,12 +11,19 @@
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "prettier"
   ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": 2022,
     "sourceType": "module",
-    "project": "tsconfig.json"
+    "tsconfidRootDir": "__dirname",
+    "project": [
+      "./tsconfig.json"
+    ]
   },
   "rules": {},
-  "parser": "@typescript-eslint/parser"
+  "root": true
 }
