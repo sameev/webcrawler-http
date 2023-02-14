@@ -1,10 +1,10 @@
-const { JSDOM } = require("jsdom");
+const { JSDOM } = require('jsdom');
 
 const normalizeURL = (urlString) => {
   const urlObj = new URL(urlString);
 
   const fullPath = `${urlObj.hostname}${urlObj.pathname}`;
-  if (fullPath.length && fullPath.slice(-1) === "/") {
+  if (fullPath.length && fullPath.slice(-1) === '/') {
     return fullPath.slice(0, -1);
   }
 
@@ -14,10 +14,10 @@ const normalizeURL = (urlString) => {
 const getURLsFromHTML = (htmlBody, baseURL) => {
   const urls = [];
   const dom = new JSDOM(htmlBody);
-  const linkElements = dom.window.document.querySelectorAll("a");
+  const linkElements = dom.window.document.querySelectorAll('a');
 
   linkElements.forEach((link) => {
-    if (link.href[0] === "/") {
+    if (link.href[0] === '/') {
       //relative
       try {
         const urlObj = new URL(`${baseURL}${link.href}`);
@@ -64,8 +64,8 @@ async function crawlPage(baseURL, currentURL, pages) {
       return pages;
     }
 
-    const contentType = res.headers.get("content-type");
-    if (!contentType.includes("text/html")) {
+    const contentType = res.headers.get('content-type');
+    if (!contentType.includes('text/html')) {
       // throw new Error(`Received non-html response`);
       console.log(`Received non-html response from ${currentURL}.`);
       return pages;
@@ -88,5 +88,5 @@ async function crawlPage(baseURL, currentURL, pages) {
 module.exports = {
   normalizeURL,
   getURLsFromHTML,
-  crawlPage,
+  crawlPage
 };
