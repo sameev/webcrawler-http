@@ -1,4 +1,5 @@
 import { JSDOM } from 'jsdom';
+import type { Pages } from './types.js'
 
 const normalizeURL = (urlString: string) => {
   const urlObj = new URL(urlString);
@@ -23,7 +24,9 @@ const getURLsFromHTML = (htmlBody: string, baseURL: string) => {
         const urlObj = new URL(`${baseURL}${link.href}`);
         urls.push(urlObj.href);
       } catch (err) {
-        console.log(`${link.href} is not a valid URL: ${err.message}`);
+        if(err instanceof Error) {
+          console.log(`${link.href} is not a valid URL: ${err.message}`);
+        }
       }
     } else {
       //absolute
@@ -31,7 +34,9 @@ const getURLsFromHTML = (htmlBody: string, baseURL: string) => {
         const urlObj = new URL(link.href);
         urls.push(urlObj.href);
       } catch (err) {
-        console.log(`${link.href} is not a valid URL: ${err.message}`);
+        if (err instanceof Error) {
+          console.log(`${link.href} is not a valid URL: ${err.message}`);
+        }
       }
     }
   });
@@ -65,7 +70,7 @@ async function crawlPage(baseURL: string, currentURL: string, pages: Pages) {
     }
 
     const contentType = res.headers.get('content-type');
-    if (!contentType.includes('text/html')) {
+    if (contentType === null || !contentType.includes('text/html')) {
       // throw new Error(`Received non-html response`);
       console.log(`Received non-html response from ${currentURL}.`);
       return pages;
@@ -80,7 +85,9 @@ async function crawlPage(baseURL: string, currentURL: string, pages: Pages) {
 
     return pages;
   } catch (err) {
-    console.log(`Error in fetching ${currentURL}: ${err.message}`);
+    if (err instanceof Error) {
+      console.log(`Error in fetching ${currentURL}: ${err.message}`);
+    }
     return pages;
   }
 }

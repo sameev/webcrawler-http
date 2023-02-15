@@ -2,7 +2,7 @@ import { crawlPage } from "./crawl.js";
 import { printReport } from "./report.js";
 
 async function main() {
-  if (process.argv.length < 3) {
+  if (process.argv[2] === undefined) {
     console.log('No website provided.');
     process.exit(1);
   } else if (process.argv.length > 3) {
