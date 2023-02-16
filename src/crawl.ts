@@ -4,7 +4,7 @@ import type { Pages } from './types.js'
 const normalizeURL = (urlString: string) => {
   const urlObj = new URL(urlString);
 
-  const fullPath = `${urlObj.hostname}${urlObj.pathname}`;
+  const fullPath = `${urlObj.protocol}//${urlObj.hostname}${urlObj.pathname}`;
   if (fullPath.length && fullPath.slice(-1) === '/') {
     return fullPath.slice(0, -1);
   }
@@ -25,7 +25,7 @@ const getURLsFromHTML = (htmlBody: string, baseURL: string) => {
         urls.push(urlObj.href);
       } catch (err) {
         if(err instanceof Error) {
-          console.log(`${link.href} is not a valid URL: ${err.message}`);
+          console.log(`${baseURL}${link.href[0]} is not a valid URL: ${err.message}`);
         }
       }
     } else {
@@ -35,7 +35,9 @@ const getURLsFromHTML = (htmlBody: string, baseURL: string) => {
         urls.push(urlObj.href);
       } catch (err) {
         if (err instanceof Error) {
-          console.log(`${link.href} is not a valid URL: ${err.message}`);
+          // console.log(htmlBody);
+          console.log(dom.window.location.host);
+          console.log(`${link.origin} is not a valid URL: ${err.message}`);
         }
       }
     }
@@ -46,26 +48,25 @@ const getURLsFromHTML = (htmlBody: string, baseURL: string) => {
 async function crawlPage(baseURL: string, currentURL: string, pages: Pages) {
   const baseURLObj = new URL(baseURL);
   const currentURLObj = new URL(currentURL);
-
+  
   if (baseURLObj.hostname !== currentURLObj.hostname) return pages;
-
+  
   const normalizedURL = normalizeURL(currentURL);
-
+  
   if (normalizedURL in pages) {
     pages[normalizedURL]++;
     return pages;
   } else {
     pages[normalizedURL] = 1;
   }
-
-  // console.log(pages)
+    
   console.log(`Actively crawling ${currentURL}.`);
 
   try {
     const res = await fetch(currentURL);
     if (res.status > 399) {
       // throw new Error(`Received HTTP Error. Status Code: ${res.status}`)
-      console.log(`Received HTTP Error. Status Code: ${res.status}`);
+      console.log(`Received HTTP Error from ${currentURL}. Status Code: ${res.status}`);
       return pages;
     }
 
@@ -76,8 +77,10 @@ async function crawlPage(baseURL: string, currentURL: string, pages: Pages) {
       return pages;
     }
 
+
     const htmlBody = await res.text();
     const nextURLs = getURLsFromHTML(htmlBody, baseURL);
+    // console.log(nextURLs);
 
     for (const nextURL of nextURLs) {
       pages = await crawlPage(baseURL, nextURL, pages);

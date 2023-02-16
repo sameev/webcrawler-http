@@ -14,7 +14,11 @@ function printReport(pages: Pages) {
 
   const sortedPages = sortPages(pages);
   for (const page of sortedPages) {
-    console.log(`Found ${page[1]} internal links to ${page[0]}.`);
+    if(page[1] === 1) {
+      console.log(`Found ${page[1]} internal link to ${page[0]}.`);
+    } else {
+      console.log(`Found ${page[1]} internal links to ${page[0]}.`);
+    }
   }
 
   console.log('============');
