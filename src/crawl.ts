@@ -12,7 +12,7 @@ const normalizeURL = (urlString: string) => {
   return fullPath;
 };
 
-const getURLsFromHTML = (htmlBody: string, baseURL: string) => {
+const getURLsFromHTML = (htmlBody: string, baseURL: string, currentURL: string) => {
   const urls: Array<string> = [];
   const dom = new JSDOM(htmlBody);
   const linkElements = dom.window.document.querySelectorAll('a');
@@ -35,9 +35,8 @@ const getURLsFromHTML = (htmlBody: string, baseURL: string) => {
         urls.push(urlObj.href);
       } catch (err) {
         if (err instanceof Error) {
-          // console.log(htmlBody);
-          console.log(dom.window.location.host);
-          console.log(`${link.origin} is not a valid URL: ${err.message}`);
+          console.log(`An invalid URL was found on ${currentURL}.`)
+          // console.log(`${link.origin} is not a valid URL: ${err.message}`);
         }
       }
     }
@@ -79,7 +78,7 @@ async function crawlPage(baseURL: string, currentURL: string, pages: Pages) {
 
 
     const htmlBody = await res.text();
-    const nextURLs = getURLsFromHTML(htmlBody, baseURL);
+    const nextURLs = getURLsFromHTML(htmlBody, baseURL, currentURL);
     // console.log(nextURLs);
 
     for (const nextURL of nextURLs) {
